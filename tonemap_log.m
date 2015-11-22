@@ -2,7 +2,7 @@ function im = tonemap_log(hdr)
 %TONEMAP_LOG Tonemapping via logarithm
 %
 % im = tonemap_log(hdr)
-% 
+%
 % Input:
 %   hdr   [MxNx3 double]  HDR image in the RGB color space, not normalized.
 %
@@ -16,6 +16,22 @@ im = hdr - min(hdr(:));
 im = im ./ max(im(:));
 
 %% TODO: Implement me!
+
+hsvImg = rgb2hsv(im);
+hsvImg = hsvImg(:,:,3);
+
+hsvImg = log(hsvImg+eps);
+minHSV = min(min(hsvImg));
+maxHSV = max(max(hsvImg));
+hsvImg = hsvImg - minHSV;
+hsvImg = hsvImg/maxHSV;
+
+im = hsvImg - min(min(hsvImg));
+maxImg = max(max(im));
+im = hsv2rgb(im ./ maxImg);
+
+
+
 
 
 %%

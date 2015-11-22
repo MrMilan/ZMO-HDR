@@ -14,7 +14,9 @@ im = hdr - min(hdr(:));
 im = im ./ max(im(:));
 
 %% TODO: Implement me!
-
+hsvImage = rgb2hsv(im);
+histogramIm = histeq(hsvImage(:,:,3));
+im = hsv2rgb(histogramIm(:,:,3));
 
 %%
 

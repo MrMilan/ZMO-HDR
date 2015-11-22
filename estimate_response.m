@@ -30,8 +30,44 @@ L = max(Z(:)) + 1;
 [i_E, i_t] = ind2sub(size(Z), (1:numel(Z))');
 
 %% TODO: Implement me!
-E = zeros([N 1]);
-finv = zeros([L 1]);
+
+columnsVector=repmat(1:size(Z,1),1,size(Z,2))+L;
+sizeCol=size(columnsVector,1);
+rowsVector=1:sizeCol;
+
+values=[-ones(1,sizeCol) ones(1,size(Z(:),1))];
+
+columnsVector=[columnsVector Z(:)'+1];
+rowsVector=[rowsVector rowsVector];
+
+A1=sparse(rowsVector,columnsVector,values);
+
+w=sqrt(w);
+w=w(:);
+b=repmat(t,size(Z,1),1);
+b=b(:);
+
+b=log(b);
+b=b.*w;
+b(end+1)=0;
+
+A1=bsxfun(@times,A1,w); 
+
+A2=zeros(1,size(A1,2));
+A2(floor(L/2+0.5)+1)=1;
+
+A=[A1; A2];
+
+pomC=[sparse([1:L-2 1:L-2],[1:L-2 3:L],1) sparse(L-2,size(Z,1))];
+indC=2:L-1;
+C=pomC+[sparse(1:length(indC),indC,-2) sparse(L-2,size(Z,1)+1)];
+b=[b; zeros(size(C,1),1)];
+A=[A; C*sqrt(lambda)];
+
+finaleMat=A\b;
+
+finv=exp(finaleMat(1:L));
+E=exp(finaleMat(L+1:end));
 
 %%
 
