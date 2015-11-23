@@ -43,7 +43,7 @@ A1=bsxfun(@times,A1,w);
 
 pomMat(end+1)=0;
 A2=zeros(1,size(A1,2));
-A2(end+1)=1;
+A2(N+1)=1;
 vyslMat=[A1;A2]\pomMat;
 t=exp(vyslMat(N+1:end));
 E=exp(vyslMat(1:N));
