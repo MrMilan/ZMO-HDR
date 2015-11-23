@@ -33,18 +33,14 @@ assert(numel(Z) == numel(w));
 
 %% TODO: Implement me!
 
-onesMatPos=sparse(1:N,1:N,ones(1,N));
-A1=sparse([repmat(onesMatPos,P,1) kron(eye(P),ones(N,1))]);
-w=sqrt(w);
-w=w(:);
-pomMat=(log(Z(:))).*w;
+onesMat=sparse(1:N,1:N,ones(1,N));
+repMatA = repmat(onesMat,P,1);
+repMatB=kron(eye(P),ones(N,1));
+b=log(Z(:));
+b=b.*w(:);
+Z(Z==0)=eps;
 
-A1=bsxfun(@times,A1,w); 
-
-pomMat(end+1)=0;
-A2=zeros(1,size(A1,2));
-A2(N+1)=1;
-vyslMat=[A1;A2]\pomMat;
+vyslMat=A\b;
 t=exp(vyslMat(N+1:end));
 E=exp(vyslMat(1:N));
 
