@@ -18,13 +18,12 @@ im = im ./ max(im(:));
 %% TODO: Implement me!
 
 hsvImg = rgb2hsv(im);
-hsvImg = hsvImg(:,:,3);
 
-hsvImg = log(hsvImg+eps);
+hsvImg(:,:,3) = log(hsvImg(:,:,3)+eps);
 minHSV = min(min(hsvImg));
 maxHSV = max(max(hsvImg));
-hsvImg = hsvImg - minHSV;
-hsvImg = hsvImg/maxHSV;
+hsvImg(:,:,3) = hsvImg - minHSV;
+hsvImg(:,:,3) = hsvImg/maxHSV;
 
 im = hsvImg - min(min(hsvImg));
 maxImg = max(max(im));
